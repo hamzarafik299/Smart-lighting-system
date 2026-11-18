@@ -1,4 +1,7 @@
 from ultralytics import YOLO
+from datetime import datetime
+import csv
+
 
 model = YOLO("yolov8n.pt")
 
@@ -16,3 +19,19 @@ def count(fram):
             if int(box.cls) == 0:
                 nb_personnes += 1
     return nb_personnes
+def stock_csv(nb_personnes):
+    with open(
+                    "resultst.csv",
+                    "a",
+                    newline=""
+                ) as f:
+    
+                    writer = csv.writer(f)
+    
+                    writer.writerow([
+                        datetime.now(),
+                        nb_personnes
+                    ])
+    
+    print(f"{datetime.now()} -> {nb_personnes} personnes"
+                )
