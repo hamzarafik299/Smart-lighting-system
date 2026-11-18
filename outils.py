@@ -12,6 +12,7 @@ def get_frame(url):
 
         # Cas 1 : image fixe (jpeg, png...)
         if content_type.startswith("image/"):
+            print("traitmenet d image en cour ...")
             img = np.asarray(bytearray(response.content), dtype=np.uint8)
             return cv2.imdecode(img, cv2.IMREAD_COLOR)
 
@@ -19,6 +20,7 @@ def get_frame(url):
         if (content_type.startswith("video/")
                 or "multipart/x-mixed-replace" in content_type
                 or "mpegurl" in content_type):
+            print("traitmenet de vidio en cour ...")
             cap = cv2.VideoCapture(url)
             try:
                 ok, frame = cap.read()   # on récupère une seule frame

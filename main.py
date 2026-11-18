@@ -21,7 +21,7 @@ from graph import show_graph
 # CONFIGURATION
 # =====================================================
 
-URL = "https://opencam.live/api/cctv/frame/bCqve_dO30m?_t=1794828553375"
+URL = "https://opencam.live/api/cctv/stream/-z96xtGbkog/obWGa41vFHZdRakpDaSdHX.ts"
 
 model = YOLO("yolov8n.pt")
 
@@ -47,6 +47,7 @@ def surveillance():
     while running:
 
         try:
+            
             frame = get_frame(URL)
             results = model(frame)
 
