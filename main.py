@@ -1,3 +1,4 @@
+ 
 import tkinter as tk
 from tkinter import messagebox
 import threading
@@ -14,7 +15,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from ultralytics import YOLO
-
+from outils import get_frame 
+from graph import show_graph
 # =====================================================
 # CONFIGURATION
 # =====================================================
@@ -35,7 +37,7 @@ if not os.path.exists("resultst.csv"):
         writer.writerow(["date", "personnes"])
 
 # =====================================================
-# SURVEILLANCE
+# SURVEILLANCE 
 # =====================================================
 
 def surveillance():
@@ -45,24 +47,7 @@ def surveillance():
     while running:
 
         try:
-
-            response = requests.get(URL, timeout=10)
-
-            img = np.asarray(
-                bytearray(response.content),
-                dtype=np.uint8
-            )
-
-            frame = cv2.imdecode(
-                img,
-                cv2.IMREAD_COLOR
-            )
-
-            if frame is None:
-                print("Image non récupérée")
-                time.sleep(5)
-                continue
-
+            frame = get_frame(URL)
             results = model(frame)
 
             nb_personnes = 0
@@ -103,7 +88,6 @@ def surveillance():
             print("Erreur :", e)
 
         time.sleep(5)
-
 # =====================================================
 # START
 # =====================================================
@@ -133,60 +117,6 @@ def stop():
     global running
 
     running = False
-
-# =====================================================
-# GRAPHIQUE
-# =====================================================
-
-def show_graph():
-
-    try:
-
-        df = pd.read_csv("resultst.csv")
-
-        if len(df) == 0:
-
-            messagebox.showwarning(
-                "Attention",
-                "Aucune donnée à afficher."
-            )
-
-            return
-
-        df["date"] = pd.to_datetime(
-            df["date"]
-        )
-
-        plt.figure(figsize=(10, 5))
-
-        plt.plot(
-            df["date"],
-            df["personnes"],
-            marker="o",
-            color="blue"
-        )
-
-        plt.title(
-            "Nombre de personnes en fonction du temps"
-        )
-
-        plt.xlabel("Temps")
-
-        plt.ylabel("Nombre de personnes")
-
-        plt.grid(True)
-
-        plt.tight_layout()
-
-        plt.show()
-
-    except Exception as e:
-
-        messagebox.showerror(
-            "Erreur",
-            str(e)
-        )
-
 # =====================================================
 # OUVRIR CSV
 # =====================================================
@@ -200,11 +130,9 @@ def open_csv():
             "Attention",
             "Fichier introuvable"
         )
-
 # =====================================================
 # INTERFACE
 # =====================================================
-
 root = tk.Tk()
 
 root.title(
