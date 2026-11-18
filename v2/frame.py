@@ -30,3 +30,14 @@ def get_frame(url):
 
         print(f"Content-Type non géré : {content_type}")
         return None
+    
+# l resultat dyal fram khass tsifet l vm f chi socket 
+
+
+#========================================================
+# hna khass tkon chi socket kat recuperer les donnees csv..
+#
+#
+#========================================================
+#hna lfonction li katsayb lgraph kan3tiwh fichier csv awla les donnes 3la 7ssab
+#  path :  Smart-lighting-system\graph.py
